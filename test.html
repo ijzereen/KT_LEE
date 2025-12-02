@@ -19,7 +19,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background-color: #f4f4f5; 
+            background-color: #f4f4f5;
             font-family: 'Noto Sans KR', sans-serif;
             cursor: default;
         }
@@ -30,7 +30,6 @@
             top: 0;
             left: 0;
             z-index: 1;
-            /* 캔버스가 부드럽게 렌더링되도록 설정 */
             image-rendering: -webkit-optimize-contrast;
         }
 
@@ -93,6 +92,73 @@
             transition: opacity 0.5s;
         }
 
+        /* 오른쪽 디테일 패널 */
+        .detail-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 32%;
+            max-width: 420px;
+            height: 100%;
+            background: rgba(250, 250, 250, 0.96);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.08);
+            padding: 32px 28px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-panel.hidden {
+            display: none;
+        }
+
+        .detail-close {
+            border: none;
+            background: transparent;
+            align-self: flex-end;
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .detail-image-wrapper {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-image-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .detail-text {
+            padding-top: 8px;
+        }
+
+        .detail-text h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .detail-text p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #444;
+            white-space: pre-line;
+        }
+
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -101,6 +167,18 @@
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 모바일에서 디테일 패널을 아래쪽에 붙이기 */
+        @media (max-width: 768px) {
+            .detail-panel {
+                width: 100%;
+                max-width: none;
+                height: 45%;
+                top: auto;
+                bottom: 0;
+                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+            }
         }
     </style>
 </head>
@@ -119,28 +197,70 @@
 
     <div id="loader">LOADING ASSETS...</div>
 
+    <!-- 오른쪽 디테일 패널 -->
+    <div id="detail-panel" class="detail-panel hidden">
+        <button id="detail-close" class="detail-close" aria-label="Close detail">×</button>
+        <div class="detail-image-wrapper">
+            <img id="detail-image" src="" alt="Selected work">
+        </div>
+        <div class="detail-text">
+            <h2 id="detail-title">Project title</h2>
+            <p id="detail-description">
+이 영역에는 각 작품에 대한 설명 텍스트가 들어갑니다.
+예시) 촬영/제작 연도, 작업 의도, 사용한 매체, 프로젝트 배경 등을 간단히 기록할 수 있습니다.
+            </p>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // [사용자 설정 영역]
-        // 파일명 그대로 복사해서 넣었습니다.
         // ==========================================
         const MY_FILES = [
-            '1.jpeg', 
-            '2.jpeg', 
-            '3.jpeg', 
-            '4.jpeg', 
+            '1.jpeg',
+            '2.jpeg',
+            '3.jpeg',
+            '4.jpeg',
             '5.png',
             '6.png'
         ];
 
+        // 각 이미지 메타 정보 (가안 텍스트)
+        const IMAGE_META = [
+            {
+                title: "01 – Warm City Corners",
+                description: "도시의 골목과 건물 모서리에 떨어지는 오후의 빛을 따라간 시리즈입니다.\n일상의 작은 순간들을 부드러운 톤으로 포착하는 데 집중했습니다."
+            },
+            {
+                title: "02 – Quiet Objects",
+                description: "사소한 오브제들을 테이블 위에 배치하고, 빛과 그림자만으로 분위기를 만든 스틸라이프 작업입니다.\n물성, 재질감, 간격이 주는 긴장을 다루고 있습니다."
+            },
+            {
+                title: "03 – Between Windows",
+                description: "창과 창 사이로 스치는 시선들을 기록한 프로젝트입니다.\n실내/실외, 개인/공간 사이의 경계를 시각적으로 풀어내는 실험입니다."
+            },
+            {
+                title: "04 – Soft Structures",
+                description: "건축적인 구조물을 부드러운 색감과 흐릿한 초점으로 재해석한 시리즈입니다.\n견고함과 유동성 사이의 모순된 느낌을 표현하는 데 초점을 두었습니다."
+            },
+            {
+                title: "05 – Traces of Motion",
+                description: "사람과 사물이 지나간 뒤 남는 흔적들을 단편적으로 기록한 작업입니다.\n완전한 순간보다, 비워진 자리와 잔상을 통해 스토리를 상상할 수 있도록 구성했습니다."
+            },
+            {
+                title: "06 – Night Study",
+                description: "도시의 밤 조명을 활용한 색채 스터디입니다.\n네온, 간판, 자동차 라이트 등이 만들어내는 우연한 색 조합과 리듬을 탐구한 프로젝트입니다."
+            }
+        ];
+
         const CONFIG = {
-            folderPath: './assets/', // 이미지가 들어있는 폴더 경로
-            baseRadius: 100,         // 이미지가 적으므로 원 크기를 좀 키웠습니다
-            hoverScale: 1.5,         // 호버 시 확대 배율
-            attractionStrength: 0.00005 // 중앙으로 모이는 힘
+            folderPath: './assets/',   // 이미지 폴더 경로
+            baseRadius: 100,
+            hoverScale: 1.5,
+            attractionStrength: 0.00005
         };
 
-        // --- 내부 로직 ---
+        // Matter.js alias
         const Engine = Matter.Engine,
               Runner = Matter.Runner,
               Bodies = Matter.Bodies,
@@ -154,13 +274,26 @@
         let engine, runner, canvas, ctx, mouseConstraint, mouse;
         let width, height;
 
-        // 1. 이미지 경로 가공 (URL 인코딩 적용)
+        // 디테일 패널 상태
+        let isDetailOpen = false;
+        let hoveredBody = null;
+
+        // 디테일 패널 DOM
+        const detailPanel = document.getElementById('detail-panel');
+        const detailImageEl = document.getElementById('detail-image');
+        const detailTitleEl = document.getElementById('detail-title');
+        const detailDescEl = document.getElementById('detail-description');
+        const detailCloseBtn = document.getElementById('detail-close');
+
+        detailCloseBtn.addEventListener('click', () => {
+            isDetailOpen = false;
+            detailPanel.classList.add('hidden');
+        });
+
+        // 1. 이미지 경로 가공
         function getFullPaths() {
             return MY_FILES.map(filename => {
-                // http로 시작하면(외부 링크) 그대로 사용
                 if (filename.startsWith('http')) return filename;
-                
-                // 로컬 파일명 인코딩 (공백 -> %20 등)
                 return CONFIG.folderPath + encodeURIComponent(filename);
             });
         }
@@ -178,32 +311,25 @@
                 width = window.innerWidth;
                 height = window.innerHeight;
 
-                // [화질 개선 핵심] 고해상도 디스플레이 대응 (HiDPI/Retina)
-                // 기기의 픽셀 비율(dpr)을 가져옵니다. (보통 2, 아이폰 등은 3)
                 const dpr = window.devicePixelRatio || 1;
-                
-                // 캔버스의 실제 해상도를 dpr배 만큼 크게 설정
+
+                // scale 누적 방지
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+
                 canvas.width = width * dpr;
                 canvas.height = height * dpr;
-                
-                // CSS 스타일로는 원래 크기 유지
                 canvas.style.width = `${width}px`;
                 canvas.style.height = `${height}px`;
-                
-                // 그리기 좌표계를 dpr배 확대 (논리적 좌표는 그대로 유지하고 렌더링만 고해상도로)
+
                 ctx.scale(dpr, dpr);
-                
-                // 이미지가 부드럽게 렌더링되도록 설정
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
             };
+
             window.addEventListener('resize', handleResize);
             handleResize();
 
             mouse = Mouse.create(canvas);
-            
-            // Matter.js의 마우스 입력 보정 (DPI 스케일링 때문에 좌표 보정 필요)
-            // 캔버스 사이즈가 변경되면 마우스 좌표도 스케일링 된 좌표계와 CSS 사이즈 간의 괴리가 생길 수 있어 보정
             mouse.pixelRatio = window.devicePixelRatio || 1;
 
             mouseConstraint = MouseConstraint.create(engine, {
@@ -215,8 +341,59 @@
 
             runner = Runner.create();
             Runner.run(runner, engine);
-            
+
+            // 클릭 이벤트 등록
+            canvas.addEventListener('click', handleCanvasClick);
+
             startRenderLoop();
+        }
+
+        // 2-1. 클릭 시 어떤 버블을 눌렀는지 계산
+        function handleCanvasClick(e) {
+            // [중요 수정] 기존 코드에서 삭제된 부분:
+            // if (mouseConstraint && mouseConstraint.body) return; 
+            // -> 이 조건문 때문에 물체를 클릭해도 "드래그 중"으로 오판되어 함수가 멈췄습니다.
+
+            const bodies = Composite.allBodies(engine.world);
+
+            // [중요 수정] Matter.js의 mouse.position 대신, 
+            // 현재 클릭 이벤트의 정확한 화면 좌표(clientX, clientY)를 사용합니다.
+            const clickPosition = { x: e.clientX, y: e.clientY };
+
+            // 해당 좌표에 있는 물체 찾기
+            const hitBodies = Query.point(bodies, clickPosition);
+
+            // 마우스 자체(Mouse Body)가 아닌, 우리가 만든 데이터가 있는 물체만 찾기
+            const clickedBody = hitBodies.find(
+                (b) => b.label !== "Mouse Body" && b.customData
+            );
+
+            if (clickedBody) {
+                openDetailForBody(clickedBody);
+            }
+        }
+
+        function openDetailForBody(body) {
+            const data = body.customData;
+            if (!data) return;
+
+            const meta = IMAGE_META[data.id] || {
+                title: "Untitled Work",
+                description: "아직 설명이 등록되지 않은 작업입니다."
+            };
+
+            if (data.image && data.image.src) {
+                detailImageEl.src = data.image.src;
+            } else {
+                detailImageEl.src = "";
+            }
+            detailImageEl.alt = meta.title;
+
+            detailTitleEl.textContent = meta.title;
+            detailDescEl.textContent = meta.description;
+
+            isDetailOpen = true;
+            detailPanel.classList.remove('hidden');
         }
 
         // 3. 버블 생성
@@ -226,9 +403,9 @@
 
             const bodies = [];
             loadedImages.forEach((img, i) => {
-                const randomScale = 0.8 + Math.random() * 0.4; // 크기 랜덤 변형
+                const randomScale = 0.8 + Math.random() * 0.4;
                 const radius = CONFIG.baseRadius * randomScale;
-                
+
                 const x = width / 2 + (Math.random() - 0.5) * 200;
                 const y = height / 2 + (Math.random() - 0.5) * 200;
 
@@ -254,17 +431,22 @@
             (function render() {
                 window.requestAnimationFrame(render);
 
-                const center = { x: width / 2, y: height / 2 };
+                // 디테일 패널이 열려 있으면 중심을 왼쪽으로 이동
+                const centerX = isDetailOpen ? width * 0.3 : width / 2;
+                const center = { x: centerX, y: height / 2 };
+
                 const bodies = Composite.allBodies(engine.world);
                 const mousePos = mouse.position;
-                
+
+                // hover 판정
                 const query = Query.point(bodies, mousePos);
-                const hoveredBody = query.length > 0 ? query[0] : null;
+                hoveredBody = query.length > 0 ? query[0] : null;
                 let foundHover = false;
 
                 bodies.forEach(body => {
                     if (body.label === "Mouse Body") return;
 
+                    // 중앙으로 끌어당기는 힘
                     if (body !== mouseConstraint.body) {
                         const forceVector = Vector.sub(center, body.position);
                         Body.applyForce(body, body.position, Vector.mult(forceVector, CONFIG.attractionStrength));
@@ -289,10 +471,10 @@
                     }
                 });
 
-                if (!foundHover) document.body.style.cursor = 'default';
+                if (!foundHover) {
+                    document.body.style.cursor = 'default';
+                }
 
-                // 고해상도 렌더링을 위해 clearRect는 논리적 크기(width, height)를 사용하면 됨
-                // (이미 ctx.scale로 좌표계가 확장되어 있으므로)
                 ctx.clearRect(0, 0, width, height);
                 ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
                 ctx.shadowBlur = 20;
@@ -301,11 +483,11 @@
 
                 bodies.forEach(body => {
                     if (body.label === "Mouse Body") return;
-                    
+
                     const { x, y } = body.position;
                     const radius = body.circleRadius;
                     const data = body.customData;
-                    if(!data) return;
+                    if (!data) return;
 
                     ctx.save();
                     ctx.beginPath();
@@ -315,22 +497,20 @@
                     ctx.clip();
 
                     const img = data.image;
-                    // 이미지가 존재하고 로딩 완료되었는지 확인
                     if (img && img.complete && img.naturalWidth !== 0) {
                         const scale = Math.max((radius * 2) / img.width, (radius * 2) / img.height);
                         const imgW = img.width * scale;
                         const imgH = img.height * scale;
                         const zoom = (body === hoveredBody) ? 1.1 : 1.0;
-                        
+
                         ctx.drawImage(
-                            img, 
-                            x - (imgW * zoom) / 2, 
-                            y - (imgH * zoom) / 2, 
-                            imgW * zoom, 
+                            img,
+                            x - (imgW * zoom) / 2,
+                            y - (imgH * zoom) / 2,
+                            imgW * zoom,
                             imgH * zoom
                         );
                     } else {
-                        // 로딩 실패 시
                         ctx.fillStyle = "#f0f0f0";
                         ctx.fill();
                         ctx.fillStyle = "#aaa";
@@ -346,7 +526,7 @@
         // 5. 로딩 시작
         function start() {
             setupEngine();
-            
+
             const paths = getFullPaths();
             const loaded = [];
             let count = 0;
@@ -354,7 +534,7 @@
 
             const onAllLoaded = () => {
                 const loader = document.getElementById('loader');
-                if(loader) loader.style.opacity = '0';
+                if (loader) loader.style.opacity = '0';
                 setTimeout(() => loader?.remove(), 500);
                 createBubbles(loaded);
             };
@@ -366,7 +546,7 @@
 
             paths.forEach(src => {
                 const img = new Image();
-                
+
                 if (src.startsWith('http')) {
                     img.crossOrigin = "Anonymous";
                 }
@@ -385,7 +565,7 @@
             });
 
             setTimeout(() => {
-                if(count < total) {
+                if (count < total) {
                     console.log("로딩 타임아웃: 강제 실행");
                     onAllLoaded();
                 }
@@ -393,7 +573,6 @@
         }
 
         start();
-
     </script>
 </body>
 </html>
