@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEE KYUNTAE</title>
+    <!-- Matter.js 물리 엔진 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f4f4f5; 
+            font-family: 'Noto Sans KR', sans-serif;
+            cursor: default;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            /* 캔버스가 부드럽게 렌더링되도록 설정 */
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+        }
+
+        header {
+            opacity: 0;
+            animation: fadeInDown 1s ease 0.5s forwards;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: #111;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        footer {
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        footer span {
+            font-size: 0.8rem;
+            color: #888;
+            display: block;
+        }
+
+        #loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #333;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-layer">
+        <header>
+            <h1>LEE KYUNTAE</h1>
+            <p class="subtitle">Selected Works 2024</p>
+        </header>
+        <footer>
+            <span>Hover to expand • Drag to move</span>
+            <span>© 2024 My Name</span>
+        </footer>
+    </div>
+
+    <div id="loader">LOADING ASSETS...</div>
+
+    <script>
+        // ==========================================
+        // [사용자 설정 영역]
+        // 파일명 그대로 복사해서 넣었습니다.
+        // ==========================================
+        const MY_FILES = [
+            '1.jpeg', 
+            '2.jpeg', 
+            '3.jpeg', 
+            '4.jpeg', 
+            '5.png',
+            '6.png'
+        ];
+
+        const CONFIG = {
+            folderPath: './assets/', // 이미지가 들어있는 폴더 경로
+            baseRadius: 100,         // 이미지가 적으므로 원 크기를 좀 키웠습니다
+            hoverScale: 1.5,         // 호버 시 확대 배율
+            attractionStrength: 0.00005 // 중앙으로 모이는 힘
+        };
+
+        // --- 내부 로직 ---
+        const Engine = Matter.Engine,
+              Runner = Matter.Runner,
+              Bodies = Matter.Bodies,
+              Composite = Matter.Composite,
+              Mouse = Matter.Mouse,
+              MouseConstraint = Matter.MouseConstraint,
+              Vector = Matter.Vector,
+              Body = Matter.Body,
+              Query = Matter.Query;
+
+        let engine, runner, canvas, ctx, mouseConstraint, mouse;
+        let width, height;
+
+        // 1. 이미지 경로 가공 (URL 인코딩 적용)
+        function getFullPaths() {
+            return MY_FILES.map(filename => {
+                // http로 시작하면(외부 링크) 그대로 사용
+                if (filename.startsWith('http')) return filename;
+                
+                // 로컬 파일명 인코딩 (공백 -> %20 등)
+                return CONFIG.folderPath + encodeURIComponent(filename);
+            });
+        }
+
+        // 2. 엔진 초기화
+        function setupEngine() {
+            engine = Engine.create();
+            engine.world.gravity.y = 0;
+
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+
+            const handleResize = () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+
+                // [화질 개선 핵심] 고해상도 디스플레이 대응 (HiDPI/Retina)
+                // 기기의 픽셀 비율(dpr)을 가져옵니다. (보통 2, 아이폰 등은 3)
+                const dpr = window.devicePixelRatio || 1;
+                
+                // 캔버스의 실제 해상도를 dpr배 만큼 크게 설정
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                
+                // CSS 스타일로는 원래 크기 유지
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                
+                // 그리기 좌표계를 dpr배 확대 (논리적 좌표는 그대로 유지하고 렌더링만 고해상도로)
+                ctx.scale(dpr, dpr);
+                
+                // 이미지가 부드럽게 렌더링되도록 설정
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+            };
+            window.addEventListener('resize', handleResize);
+            handleResize();
+
+            mouse = Mouse.create(canvas);
+            
+            // Matter.js의 마우스 입력 보정 (DPI 스케일링 때문에 좌표 보정 필요)
+            // 캔버스 사이즈가 변경되면 마우스 좌표도 스케일링 된 좌표계와 CSS 사이즈 간의 괴리가 생길 수 있어 보정
+            mouse.pixelRatio = window.devicePixelRatio || 1;
+
+            mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.1, render: { visible: false } }
+            });
+            mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+            mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+
+            runner = Runner.create();
+            Runner.run(runner, engine);
+            
+            startRenderLoop();
+        }
+
+        // 3. 버블 생성
+        function createBubbles(loadedImages) {
+            Composite.clear(engine.world);
+            Composite.add(engine.world, mouseConstraint);
+
+            const bodies = [];
+            loadedImages.forEach((img, i) => {
+                const randomScale = 0.8 + Math.random() * 0.4; // 크기 랜덤 변형
+                const radius = CONFIG.baseRadius * randomScale;
+                
+                const x = width / 2 + (Math.random() - 0.5) * 200;
+                const y = height / 2 + (Math.random() - 0.5) * 200;
+
+                const body = Bodies.circle(x, y, radius, {
+                    restitution: 0.5,
+                    friction: 0.1,
+                    frictionAir: 0.02,
+                    customData: {
+                        id: i,
+                        originalRadius: radius,
+                        currentRadius: radius,
+                        targetRadius: radius,
+                        image: img
+                    }
+                });
+                bodies.push(body);
+            });
+            Composite.add(engine.world, bodies);
+        }
+
+        // 4. 렌더링 루프
+        function startRenderLoop() {
+            (function render() {
+                window.requestAnimationFrame(render);
+
+                const center = { x: width / 2, y: height / 2 };
+                const bodies = Composite.allBodies(engine.world);
+                const mousePos = mouse.position;
+                
+                const query = Query.point(bodies, mousePos);
+                const hoveredBody = query.length > 0 ? query[0] : null;
+                let foundHover = false;
+
+                bodies.forEach(body => {
+                    if (body.label === "Mouse Body") return;
+
+                    if (body !== mouseConstraint.body) {
+                        const forceVector = Vector.sub(center, body.position);
+                        Body.applyForce(body, body.position, Vector.mult(forceVector, CONFIG.attractionStrength));
+                    }
+
+                    const data = body.customData;
+                    if (!data) return;
+
+                    if (body === hoveredBody && !mouseConstraint.body) {
+                        data.targetRadius = data.originalRadius * CONFIG.hoverScale;
+                        document.body.style.cursor = 'pointer';
+                        foundHover = true;
+                    } else {
+                        data.targetRadius = data.originalRadius;
+                    }
+
+                    const diff = data.targetRadius - data.currentRadius;
+                    if (Math.abs(diff) > 0.5) {
+                        data.currentRadius += diff * 0.15;
+                        const scaleFactor = data.currentRadius / body.circleRadius;
+                        Body.scale(body, scaleFactor, scaleFactor);
+                    }
+                });
+
+                if (!foundHover) document.body.style.cursor = 'default';
+
+                // 고해상도 렌더링을 위해 clearRect는 논리적 크기(width, height)를 사용하면 됨
+                // (이미 ctx.scale로 좌표계가 확장되어 있으므로)
+                ctx.clearRect(0, 0, width, height);
+                ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetX = 5;
+                ctx.shadowOffsetY = 10;
+
+                bodies.forEach(body => {
+                    if (body.label === "Mouse Body") return;
+                    
+                    const { x, y } = body.position;
+                    const radius = body.circleRadius;
+                    const data = body.customData;
+                    if(!data) return;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fill();
+                    ctx.clip();
+
+                    const img = data.image;
+                    // 이미지가 존재하고 로딩 완료되었는지 확인
+                    if (img && img.complete && img.naturalWidth !== 0) {
+                        const scale = Math.max((radius * 2) / img.width, (radius * 2) / img.height);
+                        const imgW = img.width * scale;
+                        const imgH = img.height * scale;
+                        const zoom = (body === hoveredBody) ? 1.1 : 1.0;
+                        
+                        ctx.drawImage(
+                            img, 
+                            x - (imgW * zoom) / 2, 
+                            y - (imgH * zoom) / 2, 
+                            imgW * zoom, 
+                            imgH * zoom
+                        );
+                    } else {
+                        // 로딩 실패 시
+                        ctx.fillStyle = "#f0f0f0";
+                        ctx.fill();
+                        ctx.fillStyle = "#aaa";
+                        ctx.textAlign = "center";
+                        ctx.font = "12px Arial";
+                        ctx.fillText("No Img", x, y);
+                    }
+                    ctx.restore();
+                });
+            })();
+        }
+
+        // 5. 로딩 시작
+        function start() {
+            setupEngine();
+            
+            const paths = getFullPaths();
+            const loaded = [];
+            let count = 0;
+            const total = paths.length;
+
+            const onAllLoaded = () => {
+                const loader = document.getElementById('loader');
+                if(loader) loader.style.opacity = '0';
+                setTimeout(() => loader?.remove(), 500);
+                createBubbles(loaded);
+            };
+
+            if (total === 0) {
+                onAllLoaded();
+                return;
+            }
+
+            paths.forEach(src => {
+                const img = new Image();
+                
+                if (src.startsWith('http')) {
+                    img.crossOrigin = "Anonymous";
+                }
+
+                img.onload = () => {
+                    count++;
+                    if (count === total) onAllLoaded();
+                };
+                img.onerror = () => {
+                    console.warn("이미지 로드 실패:", src);
+                    count++;
+                    if (count === total) onAllLoaded();
+                };
+                img.src = src;
+                loaded.push(img);
+            });
+
+            setTimeout(() => {
+                if(count < total) {
+                    console.log("로딩 타임아웃: 강제 실행");
+                    onAllLoaded();
+                }
+            }, 3000);
+        }
+
+        start();
+
+    </script>
+</body>
+</html>
