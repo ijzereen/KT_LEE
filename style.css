@@ -32,6 +32,34 @@ a {
 }
 
 /* =====================================================
+   Loader
+   ===================================================== */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f4f4f5;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #333;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* 로딩 중일 때 메인 콘텐츠 숨기기 */
+body.loading canvas,
+body.loading .ui-layer {
+    opacity: 0;
+}
+
+/* =====================================================
    Navigation Bar
    ===================================================== */
 header {
@@ -305,6 +333,7 @@ canvas {
     top: 0;
     left: 0;
     z-index: 1;
+    transition: opacity 0.5s ease;
 }
 
 .ui-layer {
@@ -318,6 +347,7 @@ canvas {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: opacity 0.5s ease;
 }
 
 .ui-layer header,
