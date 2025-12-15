@@ -505,3 +505,226 @@ canvas {
         bottom: 0;
     }
 }
+
+/* =====================================================
+   Project Accordion (Project page)
+   ===================================================== */
+
+.project-hint {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 18px 0;
+  letter-spacing: 0.02em;
+}
+
+.project-list--accordion {
+  border-top: 1px solid #111;
+}
+
+/* Make the list row a real button (accessible), but keep catalog look */
+.project-entry .project-item {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 1fr 1fr auto;
+  align-items: baseline;
+  gap: 0;
+  padding: 24px 0;
+
+  cursor: pointer;
+}
+
+.project-entry .project-item:focus-visible {
+  outline: 2px solid rgba(17,17,17,0.35);
+  outline-offset: 6px;
+}
+
+/* Override hover padding shift: move content without layout jump */
+.project-entry .project-item:hover {
+  border-bottom-color: #111;
+}
+
+.project-entry .project-item:hover .p-title {
+  transform: translateX(10px);
+}
+
+.project-entry .p-title {
+  transition: transform 0.3s ease;
+}
+
+/* Prevent layout shift from the legacy hover rule */
+.project-entry .project-item { padding-left: 0; border-bottom: 1px solid #e0e0e0; transition: border-color 0.25s ease; }
+.project-entry .project-item:hover { padding-left: 0; border-bottom-color: #111; }
+
+/* Toggle icon */
+.p-toggle {
+  justify-self: end;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.p-toggle::before,
+.p-toggle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.p-toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.project-entry.is-open .p-toggle {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+
+.project-entry.is-open .p-toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg); /* becomes minus */
+}
+
+/* Detail panel (inline accordion) */
+.project-detail {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.project-entry.is-open .project-detail {
+  border-bottom-color: #111;
+}
+
+.project-detail-inner {
+  padding: 18px 0 28px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.project-gallery {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.project-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-summary {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #222;
+  margin-bottom: 10px;
+  word-break: keep-all;
+}
+
+.project-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 28px;
+}
+
+.project-block {
+  padding-top: 8px;
+}
+
+.project-block h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.project-block ul,
+.project-block ol {
+  padding-left: 18px;
+  color: #333;
+  line-height: 1.8;
+  font-size: 0.98rem;
+}
+
+.project-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.project-meta .dl-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.project-meta dt {
+  font-family: 'Montserrat', sans-serif;
+  color: #777;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.project-meta dd {
+  color: #222;
+  font-size: 0.95rem;
+}
+
+.project-block-wide {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.project-note {
+  margin-top: 12px;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .project-entry .project-item {
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 18px 0;
+  }
+
+  .project-entry .p-id,
+  .project-entry .p-year,
+  .project-entry .p-cat {
+    display: none;
+  }
+
+  .project-detail-inner {
+    padding: 14px 0 22px 0;
+  }
+
+  .project-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .project-meta .dl-row {
+    grid-template-columns: 92px 1fr;
+  }
+}
