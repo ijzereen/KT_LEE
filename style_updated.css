@@ -313,7 +313,6 @@ h2.page-title {
    Info Page
    ===================================================== */
 .info-layout {
-    padding-top: 100px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
@@ -503,5 +502,345 @@ canvas {
         height: 60%;
         top: auto;
         bottom: 0;
+    }
+}
+
+/* =====================================================
+   PDF-style Resume Layout (matches provided PDF)
+   ===================================================== */
+
+.resume-pdf {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    padding: 56px 56px 64px;
+}
+
+.resume-pdf-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.resume-pdf-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 2.2rem;
+    letter-spacing: 0.22em;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.resume-pdf-role {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #333;
+    letter-spacing: 0.03em;
+}
+
+.resume-pdf-photo {
+    flex: 0 0 auto;
+}
+
+.resume-pdf-photo img {
+    width: 78px;
+    height: 78px;
+    border-radius: 999px;
+    object-fit: cover;
+    background: #f0f0f0;
+    display: block;
+}
+
+.resume-pdf-rule {
+    width: 100%;
+    height: 2px;
+    background: #111;
+    margin-top: 16px;
+}
+
+.resume-pdf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 34px;
+}
+
+.resume-pdf-col.left {
+    padding-right: 36px;
+}
+
+.resume-pdf-col.right {
+    padding-left: 36px;
+    border-left: 1px solid #ddd;
+}
+
+.resume-pdf-block {
+    margin-bottom: 28px;
+}
+
+.resume-pdf-section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #111;
+    margin-bottom: 14px;
+}
+
+.resume-pdf-dl {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.resume-pdf-dl .row {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 12px;
+}
+
+.resume-pdf-dl dt {
+    color: #444;
+    font-weight: 600;
+}
+
+.resume-pdf-dl dd {
+    color: #111;
+}
+
+.resume-pdf-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.tl-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.tl-date {
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.tl-sub {
+    margin-top: 4px;
+    color: #777;
+    font-size: 0.82rem;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.tl-title {
+    font-weight: 700;
+    color: #111;
+}
+
+.tl-desc {
+    color: #444;
+    margin-top: 3px;
+}
+
+.resume-pdf-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.skill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    font-size: 0.95rem;
+}
+
+.skill-name {
+    color: #111;
+    font-weight: 600;
+}
+
+.dots {
+    display: inline-flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1px solid #111;
+    display: inline-block;
+}
+
+.dot.full { background: #111; }
+.dot.empty { background: transparent; }
+.dot.half { background: linear-gradient(90deg, #111 50%, transparent 50%); }
+
+/* Experience */
+.resume-pdf-exp {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.exp-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.exp-date {
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.exp-sub {
+    margin-top: 4px;
+    color: #777;
+    font-size: 0.82rem;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.exp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.exp-company {
+    font-weight: 800;
+    color: #111;
+}
+
+.exp-team {
+    font-weight: 700;
+    color: #666;
+    white-space: nowrap;
+}
+
+.exp-desc {
+    color: #444;
+    margin-top: 4px;
+}
+
+/* Awards */
+.resume-pdf-awards {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.award-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.award-date {
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.award-title {
+    font-weight: 800;
+    color: #111;
+}
+
+.award-meta {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #444;
+}
+
+.meta-label {
+    display: inline-block;
+    width: 52px;
+    color: #777;
+    font-weight: 600;
+}
+
+/* Activities */
+.resume-pdf-activities {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.act-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.act-date {
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.act-title {
+    font-weight: 800;
+    color: #111;
+}
+
+.act-desc {
+    color: #444;
+    margin-top: 4px;
+}
+
+.act-org {
+    margin-top: 4px;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .resume-pdf {
+        padding: 28px 22px 32px;
+    }
+
+    .resume-pdf-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .resume-pdf-col.left {
+        padding-right: 0;
+    }
+
+    .resume-pdf-col.right {
+        padding-left: 0;
+        border-left: 0;
+        border-top: 1px solid #ddd;
+        padding-top: 28px;
+    }
+
+    .tl-item, .exp-item, .award-item, .act-item {
+        grid-template-columns: 1fr;
+        gap: 6px;
     }
 }

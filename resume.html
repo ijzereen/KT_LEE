@@ -6,106 +6,346 @@
     <title>Resume | LEE KYUNTAE</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_updated.css">
 </head>
 <body class="page">
     <div class="page-shell">
-        <header>
+        <header class="site-header">
             <nav class="top-nav" aria-label="Primary">
                 <div class="nav-left">
-                    <a href="resume.html" aria-current="page">Resume</a>
-                    <a href="info.html">Info</a>
+                    <a href="resume.html">RESUME</a>
+                    <a href="info.html">INFO</a>
                 </div>
-                <div class="nav-right">
-                    <a href="project.html">Project</a>
-                </div>
-            </nav>
-            <div class="site-header-content">
+
                 <h1 class="site-title">
-                    <a href="index.html" aria-label="Go to home">LEE KYUNTAE</a>
+                    <a class="brand" href="index.html" aria-label="Go to home">
+                    <img src="assets/site-title-scaled.png" alt="LEE KYUNTAE" />
+                    </a>
                 </h1>
-                <p class="subtitle">Resume</p>
-            </div>
+
+                <div class="nav-right">
+                    <a href="project.html">PROJECT</a>
+                </div>
+                </nav>
+                <p class="subtitle">LEE KYUNTAE DESIGN STUDIO</p>
         </header>
 
+        
         <main class="page-content">
-            
-            <section class="resume-section">
-                <span class="section-title">Education</span>
-                <div class="resume-list">
-                    <div class="resume-item">
-                        <div class="resume-year">2020 – 2026</div>
-                        <div class="resume-detail">
-                            <strong>Kyung Hee University</strong>
-                            <span>Bachelor of Fine Arts, Digital Contents</span>
-                        </div>
+
+            <!-- PDF-style resume (mirrors the provided PDF layout/content) -->
+            <section class="resume-pdf" aria-label="Resume">
+                <div class="resume-pdf-top">
+                    <div class="resume-pdf-identity">
+                        <h2 class="resume-pdf-name">LEE, KYUNTAE</h2>
+                        <p class="resume-pdf-role">Furniture &amp; Object Designer</p>
+                    </div>
+
+                    <div class="resume-pdf-photo" aria-hidden="true">
+                        <img src="profile.png" alt="Profile photo">
                     </div>
                 </div>
-            </section>
 
-            <section class="resume-section">
-                <span class="section-title">Experience</span>
-                <div class="resume-list">
-                    <div class="resume-item">
-                        <div class="resume-year">2024. 06</div>
-                        <div class="resume-detail">
-                            <strong>Summer Design Workshop</strong>
-                            <span>Assistant Designer / Seoul, Korea</span>
-                        </div>
-                    </div>
-                    <div class="resume-item">
-                        <div class="resume-year">2023. 12</div>
-                        <div class="resume-detail">
-                            <strong>Freelance Photographer</strong>
-                            <span>Commercial & Portrait Projects</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                <div class="resume-pdf-rule" aria-hidden="true"></div>
 
-            <section class="resume-section">
-                <span class="section-title">Exhibitions</span>
-                <div class="resume-list">
-                    <div class="resume-item">
-                        <div class="resume-year">2025</div>
-                        <div class="resume-detail">
-                            <strong>New Waves Group Exhibition</strong>
-                            <span>Gallery A, Seoul</span>
-                        </div>
-                    </div>
-                    <div class="resume-item">
-                        <div class="resume-year">2024</div>
-                        <div class="resume-detail">
-                            <strong>Digital Art Fair</strong>
-                            <span>BEXCO, Busan</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                <div class="resume-pdf-grid">
+                    <!-- LEFT COLUMN -->
+                    <div class="resume-pdf-col left">
 
-            <section class="resume-section">
-                <span class="section-title">Skills</span>
-                <div class="resume-list">
-                    <div class="resume-item">
-                        <div class="resume-year">Software</div>
-                        <div class="resume-detail">
-                            <span>Adobe Creative Suite (Ps, Ai, Pr, Ae), Cinema 4D, Figma</span>
-                        </div>
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">인적사항</h3>
+
+                            <dl class="resume-pdf-dl">
+                                <div class="row">
+                                    <dt>이름</dt><dd>이균태</dd>
+                                </div>
+                                <div class="row">
+                                    <dt>생년월일</dt><dd>2002. 07. 10</dd>
+                                </div>
+                                <div class="row">
+                                    <dt>휴대폰</dt><dd>010-8758-2710</dd>
+                                </div>
+                                <div class="row">
+                                    <dt>이메일</dt><dd>kt0710@kakao.com</dd>
+                                </div>
+                                <div class="row">
+                                    <dt>주소</dt><dd>경기도 의정부시 범골로29번길 34</dd>
+                                </div>
+                                <div class="row">
+                                    <dt>SNS</dt><dd>인스타그램 ID : @kyuntaelee</dd>
+                                </div>
+                            </dl>
+                        </section>
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">학력사항</h3>
+
+                            <div class="resume-pdf-timeline">
+                                <div class="tl-item">
+                                    <div class="tl-date">
+                                        <div>2022.03 - 재학 중</div>
+                                        <div class="tl-sub">졸업예정</div>
+                                    </div>
+                                    <div class="tl-body">
+                                        <div class="tl-title">경희대학교(서울)</div>
+                                        <div class="tl-desc">주거환경학과</div>
+                                    </div>
+                                </div>
+
+                                <div class="tl-item">
+                                    <div class="tl-date">
+                                        <div>2018.03 - 2020.02</div>
+                                        <div class="tl-sub">졸업</div>
+                                    </div>
+                                    <div class="tl-body">
+                                        <div class="tl-title">한민고등학교</div>
+                                        <div class="tl-desc">사립 일반계</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">어학능력</h3>
+
+                            <div class="resume-pdf-timeline">
+                                <div class="tl-item">
+                                    <div class="tl-date">
+                                        <div>2011.03 - 2012.02</div>
+                                        <div class="tl-sub">수료완료</div>
+                                    </div>
+                                    <div class="tl-body">
+                                        <div class="tl-title">어학 특화 교환 학생(영어)</div>
+                                        <div class="tl-desc">수원외국인학교(GSIS)</div>
+                                    </div>
+                                </div>
+
+                                <div class="tl-item">
+                                    <div class="tl-date">
+                                        <div>2026.00 - 2026.00</div>
+                                        <div class="tl-sub">취득예정</div>
+                                    </div>
+                                    <div class="tl-body">
+                                        <div class="tl-title">토익</div>
+                                        <div class="tl-desc">영어</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">프로그램</h3>
+
+                            <div class="resume-pdf-skills" role="list">
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">오토캐드</span>
+                                    <span class="dots" aria-label="5 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">스케치업</span>
+                                    <span class="dots" aria-label="4 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot empty"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">엔스케이프</span>
+                                    <span class="dots" aria-label="3.5 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot half"></span><span class="dot empty"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">노마드 스컬프</span>
+                                    <span class="dots" aria-label="5 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">블렌더</span>
+                                    <span class="dots" aria-label="3 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot empty"></span><span class="dot empty"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">Ps &amp; Ai</span>
+                                    <span class="dots" aria-label="4 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot empty"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">파워포인트</span>
+                                    <span class="dots" aria-label="4.5 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot half"></span>
+                                    </span>
+                                </div>
+
+                                <div class="skill-row" role="listitem">
+                                    <span class="skill-name">AI활용 능력</span>
+                                    <span class="dots" aria-label="4 out of 5">
+                                        <span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot full"></span><span class="dot empty"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+
                     </div>
-                    <div class="resume-item">
-                        <div class="resume-year">Languages</div>
-                        <div class="resume-detail">
-                            <span>Korean (Native), English (Fluent)</span>
-                        </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="resume-pdf-col right">
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">경력사항</h3>
+
+                            <div class="resume-pdf-exp">
+                                <div class="exp-item">
+                                    <div class="exp-date">
+                                        <div>2024.09 - 2024.11</div>
+                                        <div class="exp-sub">3개월</div>
+                                    </div>
+                                    <div class="exp-body">
+                                        <div class="exp-head">
+                                            <span class="exp-company">탬버린즈(TAMBURINS)</span>
+                                            <span class="exp-team">공간팀</span>
+                                        </div>
+                                        <div class="exp-desc">공간 기획 및 아트 조형물 디자인</div>
+                                    </div>
+                                </div>
+
+                                <div class="exp-item">
+                                    <div class="exp-date">
+                                        <div>2022.07 - 2023.08</div>
+                                        <div class="exp-sub">1년 4개월</div>
+                                    </div>
+                                    <div class="exp-body">
+                                        <div class="exp-head">
+                                            <span class="exp-company">김씨네과일</span>
+                                            <span class="exp-team">디자인팀</span>
+                                        </div>
+                                        <div class="exp-desc">그래픽디자인 보조 및 팝업스토어 운영</div>
+                                    </div>
+                                </div>
+
+                                <div class="exp-item">
+                                    <div class="exp-date">
+                                        <div>2021.12 - 2022.07</div>
+                                        <div class="exp-sub">8개월</div>
+                                    </div>
+                                    <div class="exp-body">
+                                        <div class="exp-head">
+                                            <span class="exp-company">풋락커유한회사(FootLocker)</span>
+                                            <span class="exp-team">CX팀</span>
+                                        </div>
+                                        <div class="exp-desc">세일즈,매장 비주얼 전략 보조</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">수상내역</h3>
+
+                            <div class="resume-pdf-awards">
+                                <div class="award-item">
+                                    <div class="award-date">2025.08 - 2025.09</div>
+                                    <div class="award-body">
+                                        <div class="award-title">2023 인테르니 &amp; 데코 디자인 공모전 / 특선</div>
+                                        <div class="award-meta">
+                                            <div><span class="meta-label">주최</span> 월간 INTERNI&amp;Decor</div>
+                                            <div><span class="meta-label">세부내용</span> 제 16회 공간디자인 대전 인스토어 머천다이징 부문</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="award-item">
+                                    <div class="award-date">2026.00 - 2026.00</div>
+                                    <div class="award-body">
+                                        <div class="award-title">내용</div>
+                                        <div class="award-meta">
+                                            <div><span class="meta-label">주최</span> </div>
+                                            <div><span class="meta-label">세부내용</span> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="resume-pdf-block">
+                            <h3 class="resume-pdf-section-title">대외활동</h3>
+
+                            <div class="resume-pdf-activities">
+                                <div class="act-item">
+                                    <div class="act-date">2025.08 - 2025.09</div>
+                                    <div class="act-body">
+                                        <div class="act-title">2025 ASYAAF 아시아프 아트 페어</div>
+                                        <div class="act-desc">아시아 최대 신진작가 아트 페어 가구&amp;공예 부문 선정</div>
+                                        <div class="act-org">(주)조선일보사</div>
+                                    </div>
+                                </div>
+
+                                <div class="act-item">
+                                    <div class="act-date">2025.06 - 2025.06</div>
+                                    <div class="act-body">
+                                        <div class="act-title">HEAVENINSEOUL 전시 공간 디렉팅</div>
+                                        <div class="act-desc">가구 및 기물 배치 디렉팅 및 개인 제작 가구 협찬</div>
+                                        <div class="act-org">의류 브랜드 'Sojie'</div>
+                                    </div>
+                                </div>
+
+                                <div class="act-item">
+                                    <div class="act-date">2024.08 - 2024.10</div>
+                                    <div class="act-body">
+                                        <div class="act-title">1289 벙커 공간 브랜딩 및 공간 디렉팅</div>
+                                        <div class="act-desc">이태원역 앞 주요 상권 건물 공간 브랜딩 및 디렉팅</div>
+                                        <div class="act-org">용산구 이태원로 174</div>
+                                    </div>
+                                </div>
+
+                                <div class="act-item">
+                                    <div class="act-date">2024.02 - 2024.06</div>
+                                    <div class="act-body">
+                                        <div class="act-title">캠퍼스 리디자인 프로젝트 참여</div>
+                                        <div class="act-desc">경희대학교 서울 캠퍼스 외부공간 및 안내기물 재조성</div>
+                                        <div class="act-org">경희대학교</div>
+                                    </div>
+                                </div>
+
+                                <div class="act-item">
+                                    <div class="act-date">2024.01 - 2024.02</div>
+                                    <div class="act-body">
+                                        <div class="act-title">건국대 현대미술과 X 경희대 주거과 그룹전</div>
+                                        <div class="act-desc">현대미술전시에 개인 제작 가구 작품으로 참여</div>
+                                        <div class="act-org">건국대학교 현대미술과</div>
+                                    </div>
+                                </div>
+
+                                <div class="act-item">
+                                    <div class="act-date">2022.12 - 2022.12</div>
+                                    <div class="act-body">
+                                        <div class="act-title">LES601 성수 기획전</div>
+                                        <div class="act-desc">현대미술전시에 개인 제작 가구 작품으로 참여</div>
+                                        <div class="act-org">갤러리 빈칸(BINCAN)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
                     </div>
                 </div>
             </section>
 
         </main>
 
+
         <footer class="page-footer">
             © 2025 LEE KYUNTAE. All Rights Reserved.<br>
-            Based in Seoul, Korea.
+            주소 : 의정부시 범골로29번길 34 \ 연락처 : 010-1234-5678 \ Contact : rbsxo0710@gmail.com
         </footer>
     </div>
 </body>
