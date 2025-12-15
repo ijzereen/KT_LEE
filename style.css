@@ -315,8 +315,34 @@ h2.page-title {
 .info-layout {
     padding-top: 100px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.15fr 0.85fr;
     gap: 60px;
+    align-items: start;
+}
+
+/* Left column: profile + intro text */
+.info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.info-profile {
+    width: clamp(180px, 22vw, 280px);
+}
+
+.info-profile .profile-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 999px;
+
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.08),
+        0 6px 16px rgba(0,0,0,0.06);
 }
 
 .info-text p {
@@ -352,6 +378,7 @@ h2.page-title {
 .info-contact a:hover {
     border-bottom-color: currentColor;
 }
+
 
 /* =====================================================
    Footer
@@ -727,4 +754,81 @@ canvas {
   .project-meta .dl-row {
     grid-template-columns: 92px 1fr;
   }
+}
+
+/* =====================================================
+   Pull Reveal Signature (Info page bottom)
+   ===================================================== */
+.pull-reveal {
+    margin-top: 120px;
+    padding: 140px 0 90px;
+    min-height: 75vh;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.pull-reveal::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(circle at 35% 35%, rgba(17,17,17,0.07), transparent 55%),
+        radial-gradient(circle at 70% 60%, rgba(17,17,17,0.05), transparent 60%),
+        linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.75) 40%, rgba(255,255,255,0.95) 100%);
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.pull-reveal-inner {
+    width: 100%;
+    max-width: 720px;
+    padding: 0 40px;
+
+    text-align: center;
+    position: relative;
+    z-index: 1;
+
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.pull-reveal.is-visible .pull-reveal-inner {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pull-logo {
+    display: block;
+    margin: 0 auto 18px;
+    width: min(360px, 72vw);
+    height: auto;
+    opacity: 0.92;
+}
+
+.pull-copy {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #222;
+    margin: 0 auto 18px;
+    word-break: keep-all;
+}
+
+.pull-meta {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: #777;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .pull-reveal { padding: 110px 0 70px; min-height: 65vh; }
+    .pull-reveal-inner { padding: 0 20px; }
+    .pull-copy { font-size: 1rem; }
 }
